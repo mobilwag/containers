@@ -1,4 +1,4 @@
-FROM php:8.1.9-alpine
+FROM php:8.1.10-alpine
 
 COPY --from=mlocati/php-extension-installer:1.5.37 /usr/bin/install-php-extensions /usr/local/bin/install-php-extensions
 
