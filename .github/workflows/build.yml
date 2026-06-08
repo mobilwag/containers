@@ -11,20 +11,58 @@ permissions:
 
 jobs:
   server:
-    if: "!contains(github.event.commits[0].message, 'skip:agma-server')"
+    if: "!contains(github.event.commits[0].message, 'skip:server')"
     timeout-minutes: 30
     runs-on: ubuntu-latest
     name: build server image
     steps:
-    - uses: actions/checkout@v4
-    - uses: docker/login-action@v3
+    - uses: actions/checkout@v6
+    - uses: docker/login-action@v4
       name: login to ghcr.io
       with:
         registry: ghcr.io
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    - uses: docker/build-push-action@v5
+    - uses: docker/build-push-action@v6
       with:
         context: ./server
         push: true
         tags: ghcr.io/${{ github.repository_owner }}/app:server
+
+  owner-server:
+    if: "!contains(github.event.commits[0].message, 'skip:owner-server')"
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    name: build server image
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/login-action@v4
+        name: login to ghcr.io
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./owner/server
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/owner:server
+
+  client-server:
+    if: "!contains(github.event.commits[0].message, 'skip:client-server')"
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    name: build server image
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/login-action@v4
+        name: login to ghcr.io
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: ./client/server
+          push: true
+          tags: ghcr.io/${{ github.repository_owner }}/client:server
